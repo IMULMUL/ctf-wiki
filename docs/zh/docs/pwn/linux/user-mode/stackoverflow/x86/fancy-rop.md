@@ -50,7 +50,7 @@ gef➤  x/7i 0x000000000040061d
 
 #### 例1
 
-这里我们以 [X-CTF Quals 2016 - b0verfl0w](https://github.com/ctf-wiki/ctf-challenges/tree/master/pwn/stackoverflow/stackprivot/X-CTF%20Quals%202016%20-%20b0verfl0w) 为例进行介绍。首先，查看程序的安全保护，如下
+这里我们以 [X-CTF Quals 2016 - b0verfl0w](https://github.com/ctf-wiki/ctf-challenges/tree/master/pwn/linux/user-mode/stackoverflow/stackprivot/X-CTF%20Quals%202016%20-%20b0verfl0w) 为例进行介绍。首先，查看程序的安全保护，如下
 
 ```shell
 ➜  X-CTF Quals 2016 - b0verfl0w git:(iromise) ✗ checksec b0verfl0w                 
@@ -142,7 +142,7 @@ sh.interactive()
 
 ### 题目
 
-- [EkoPartyCTF 2016 fuckzing-exploit-200](https://github.com/ctf-wiki/ctf-challenges/tree/master/pwn/stackoverflow/stackprivot/EkoPartyCTF%202016%20fuckzing-exploit-200)
+- [EkoPartyCTF 2016 fuckzing-exploit-200](https://github.com/ctf-wiki/ctf-challenges/tree/master/pwn/linux/user-mode/stackoverflow/stackprivot/EkoPartyCTF%202016%20fuckzing-exploit-200)
 
 ## frame faking
 
@@ -237,7 +237,7 @@ ebp2|leave ret addr|arg1|arg2
 
 
 ### 2018 安恒杯 over
-以 2018 年 6 月安恒杯月赛的 over 一题为例进行介绍, 题目可以在 [ctf-challenge](https://github.com/ctf-wiki/ctf-challenges/tree/master/pwn/stackoverflow/fake_frame/over) 中找到
+以 2018 年 6 月安恒杯月赛的 over 一题为例进行介绍, 题目可以在 [ctf-challenge](https://github.com/ctf-wiki/ctf-challenges/tree/master/pwn/linux/user-mode/stackoverflow/fake_frame/over) 中找到
 
 #### 文件信息
 ```bash
@@ -408,9 +408,29 @@ void __attribute__ ((noreturn)) internal_function __fortify_fail (const char *ms
 
 所以说如果我们利用栈溢出覆盖 argv[0] 为我们想要输出的字符串的地址，那么在 `__fortify_fail` 函数中就会输出我们想要的信息。
 
+
+
+> 批注： 这个方法在 glibc-2.31 之后不可用了, 具体看这个部分代码 [fortify_fail.c](https://elixir.bootlin.com/glibc/glibc-2.31/source/debug/fortify_fail.c) 。
+
+```c
+#include <stdio.h>
+
+void
+__attribute__ ((noreturn))
+__fortify_fail (const char *msg)
+{
+  /* The loop is added only to keep gcc happy.  */
+  while (1)
+    __libc_message (do_abort, "*** %s ***: terminated\n", msg);
+}
+libc_hidden_def (__fortify_fail)
+```
+
+> 总结一下原因就是现在不会打印argv[0] 指针所指向的字符串
+
 ### 32C3 CTF readme
 
-这里，我们以 2015 年 32C3 CTF readme 为例进行介绍，该题目在 jarvisoj 上有复现。
+这里，我们以 2015 年 32C3 CTF readme 为例进行介绍，该题目在 [jarvisoj](https://www.jarvisoj.com/challenges) 上有复现。方便读者复现, binary 也可以在 [ctf-challenge ](https://github.com/ctf-wiki/ctf-challenges/tree/master/pwn/linux/user-mode/stackoverflow/stacksmashes/32c3-CTF-readme)这个仓库找到
 
 #### 确定保护
 
@@ -680,7 +700,7 @@ partial overwrite 这种技巧在很多地方都适用, 这里先以栈上的 pa
 我们知道, 在开启了随机化（ASLR，PIE）后, 无论高位的地址如何变化，低 12 位的页内偏移始终是固定的, 也就是说如果我们能更改低位的偏移, 就可以在一定程度上控制程序的执行流, 绕过 PIE 保护。
 
 ### 2018-安恒杯-babypie
-以安恒杯 2018 年 7 月月赛的 babypie 为例分析这一种利用技巧, 题目的 binary 放在了 [ctf-challenge](https://github.com/ctf-wiki/ctf-challenges/tree/master/pwn/stackoverflow/partial_overwrite) 中
+以安恒杯 2018 年 7 月月赛的 babypie 为例分析这一种利用技巧, 题目的 binary 放在了 [ctf-challenge](https://github.com/ctf-wiki/ctf-challenges/tree/master/pwn/linux/user-mode/stackoverflow/partial_overwrite) 中
 #### 确定保护
 ```bash
 babypie: ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=77a11dbd367716f44ca03a81e8253e14b6758ac3, stripped
@@ -841,7 +861,7 @@ pwndbg> x/10i (0x0A3E+0x55dc43694000)
    0x55dc43694a52:	mov    rbp,rsp
    0x55dc43694a55:	sub    rsp,0x10
 ```
-可以发现, 此时的返回地址与 get shell 函数的地址只有低位的 16 bit 不同, 如果覆写低 16 bit 为 `0x?A3E`, 就有一定的几率 get shell
+可以发现, 此时的返回地址与 get shell 函数的地址只有低位的 8 bit 不同, 如果覆写低 8 bit 为 `0x?A3E`, 就有一定的几率 get shell
 
 最终的脚本如下:
 ```python

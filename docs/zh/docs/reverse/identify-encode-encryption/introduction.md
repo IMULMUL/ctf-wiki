@@ -62,7 +62,7 @@ void decrypt (uint32_t* v, uint32_t* k) {
 
 
 
-在 Tea 算法中其最主要的识别特征就是 拥有一个 image number ：0x9e3779b9 。当然，这 Tea 算法也有魔改的，感兴趣的可以看 2018 0ctf Quals milk-tea。
+在 Tea 算法中其最主要的识别特征就是 拥有一个 magic number ：0x9e3779b9 。当然，这 Tea 算法也有魔改的，感兴趣的可以看 2018 0ctf Quals milk-tea。
 
 
 
@@ -78,7 +78,7 @@ void decrypt (uint32_t* v, uint32_t* k) {
 void rc4_init(unsigned char *s, unsigned char *key, unsigned long Len) //初始化函数
 {
     int i =0, j = 0;
-    char k[256] = {0};
+    unsigned char k[256] = {0}; // 必须为无符号类型，否则会导致密文部分错误
     unsigned char tmp = 0;
     for (i=0;i<256;i++) {
         s[i] = i;
@@ -143,6 +143,62 @@ void rc4_crypt(unsigned char *s, unsigned char *Data, unsigned long Len) //加�
 此算法保证每256次循环中S盒的每个元素至少被交换过一次
 
 
+
+### python解密脚本
+
+对应例题：《从 0 到 1》RE 篇——BabyAlgorithm
+
+[题目链接](https://buuoj.cn/challenges#[%E7%AC%AC%E4%BA%94%E7%AB%A0%20CTF%E4%B9%8BRE%E7%AB%A0]BabyAlgorithm)
+
+```python
+import base64
+def rc4_main(key = "init_key", message = "init_message"):
+    print("RC4解密主函数调用成功")
+    print('\n')
+    s_box = rc4_init_sbox(key)
+    crypt = rc4_excrypt(message, s_box)
+    return crypt
+def rc4_init_sbox(key):
+    s_box = list(range(256))
+    print("原来的 s 盒：%s" % s_box)
+    print('\n')
+    j = 0
+    for i in range(256):
+        j = (j + s_box[i] + ord(key[i % len(key)])) % 256
+        s_box[i], s_box[j] = s_box[j], s_box[i]
+    print("混乱后的 s 盒：%s"% s_box)
+    print('\n')
+    return s_box
+def rc4_excrypt(plain, box):
+    print("调用解密程序成功。")
+    print('\n')
+    plain = base64.b64decode(plain.encode('utf-8'))
+    plain = bytes.decode(plain)
+    res = []
+    i = j = 0
+    for s in plain:
+        i = (i + 1) % 256
+        j = (j + box[i]) % 256
+        box[i], box[j] = box[j], box[i]
+        t = (box[i] + box[j]) % 256
+        k = box[t]
+        res.append(chr(ord(s) ^ k))
+    print("res用于解密字符串，解密后是：%res" %res)
+    print('\n')
+    cipher = "".join(res)
+    print("解密后的字符串是：%s" %cipher)
+    print('\n')
+    print("解密后的输出(没经过任何编码):")
+    print('\n')
+    return cipher
+a=[] #cipher
+key=""
+s=""
+for i in a:
+    s+=chr(i)
+s=str(base64.b64encode(s.encode('utf-8')), 'utf-8')
+rc4_main(key, s)
+```
 
 ## MD5
 

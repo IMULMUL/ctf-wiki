@@ -1,8 +1,20 @@
+<div align="center">
+
+<a href="https://ctf-wiki.org/static/img/logo.png" target="_blank"><img src="https://ctf-wiki.org/static/img/logo.png" width="128" height="128"></a>
+
 # CTF Wiki
 
-[![Build Status](https://travis-ci.org/ctf-wiki/ctf-wiki.svg?branch=master)](https://travis-ci.org/ctf-wiki/ctf-wiki)
-[![Requirements Status](https://requires.io/github/ctf-wiki/ctf-wiki/requirements.svg?branch=master)](https://requires.io/github/ctf-wiki/ctf-wiki/requirements/?branch=master)
-[![Slack](https://img.shields.io/badge/slack-join%20chat-brightgreen.svg)](https://join.slack.com/t/ctf-wiki/shared_invite/enQtNTkwNDg5NDUzNzAzLTQ3YTliNzI5OGNhM2NmNzI3NTU0YWRlNWFkY2EzYTExN2Y3ZjRkNzYzYmRhNDNlYmY5YTVmNjNhYjliZDgyNTY)
+<p align="center">
+
+Come and join us, we need you!
+
+[![](https://img.shields.io/discord/1115906685450596435?style=for-the-badge&color=%237289DA&label=Discord&logo=discord&logoColor=white")](https://discord.gg/ekv7WDa9pq)  [![](https://img.shields.io/github/stars/CTF-Wiki/CTF-Wiki?style=for-the-badge&color=black&label=Stars&logo=github&logoColor=white")](https://github.com/CTF-Wiki/CTF-Wiki/stargazers)
+
+</p>
+
+</div>
+
+## Introduction
 
 [中文](./README-zh_CN.md)  [English](./README.md)
 
@@ -56,9 +68,8 @@ python3 scripts/docs.py serve
 
 **mkdocs 本地部署的网站是动态更新的，即当你修改并保存 md 文件后，刷新页面就能随之动态更新。**
 
-> 注意：在使用 mkdocs-material 的 insiders 版本后，暂时不支持 docker 构建。
 
-如果你只是想本地浏览，并不想修改文档？试试 Docker 把！
+你只是想本地浏览，并不想修改文档？试试 Docker 吧！
 
 ```
 docker run -d --name=ctf-wiki -p 4100:80 ctfwiki/ctf-wiki
@@ -82,7 +93,7 @@ docker run -d --name=ctf-wiki -p 4100:80 ctfwiki/ctf-wiki
 
 非常感谢一起完善 CTF Wiki 的小伙伴们
 
-<a href="https://github.com/ctf-wiki/ctf-wiki/graphs/contributors"><img src="https://opencollective.com/ctf-wiki/contributors.svg?width=890&button=false" /></a>
+<a href="https://github.com/ctf-wiki/ctf-wiki/graphs/contributors"><img src="https://contrib.rocks/image?repo=ctf-wiki/ctf-wiki" /></a>
 
 ## What can you get?
 

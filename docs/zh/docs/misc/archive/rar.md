@@ -39,7 +39,7 @@ Rar压缩包的文件头为 `0x 52 61 72 21 1A 07 00`。
 | SALT          | 8               | present if (HEAD_FLAGS & 0x400) != 0                                                                                     |
 | EXT_TIME      | variable size   | present if (HEAD_FLAGS & 0x1000) != 0                                                                                    |
 
-每个 RAR 文件的结尾快（Terminator）都是固定的。
+每个 RAR 文件的结尾块（Terminator）都是固定的。
 
 | Field Name | Size (bytes) | Possibilities       |
 | ---------- | ------------ | ------------------- |
@@ -48,7 +48,7 @@ Rar压缩包的文件头为 `0x 52 61 72 21 1A 07 00`。
 | HEAD_FLAGS | 2            | Always 0x4000       |
 | HEAD_SIZE  | 2            | Block size = 0x0007 |
 
-更多详见 <https://forensicswiki.xyz/wiki/index.php?title=RAR>
+更多详见 [Rar - Forensics Wiki](https://forensics.wiki/rar/)
 
 ## 主要攻击
 
